@@ -1,6 +1,8 @@
 let intervalId;
 var flag=false;
 let dange= document.getElementById("points");
+var now=0;
+var countt=0;
 
 
 function startTimer(durationInSecond) {
@@ -19,11 +21,17 @@ function startTimer(durationInSecond) {
 
             seconds = seconds<10 ? '0' + seconds : seconds;
 
-            timerElement.textContent=seconds;
+            if(!now) timerElement.textContent=seconds;
 
             if(--duration < 0) {
                 clearInterval(intervalId);
-                timerElement.textContent = "Game Over!";
+                if(!now)timerElement.textContent = "Game Over!";
+
+                now=1;
+                
+                dange.textContent=countt;
+                gameend.textContent = "Game Over!";
+                
             }
     }
 
@@ -36,7 +44,7 @@ function startTimer(durationInSecond) {
 
 function changeColorForSenior(targetDiv){
     var targetDivId = document.getElementById(targetDiv);
-    if(targetDivId.style.backgroundColor!="blue"){
+    if(targetDivId.style.backgroundColor!="blue" && now==0){
 
         targetDivId.style.backgroundColor= "red";
         setTimeout(function() {
@@ -48,22 +56,24 @@ function changeColorForSenior(targetDiv){
 function myChangeColor(targetDiv){
     if(targetDiv.style.backgroundColor!="red"){
         targetDiv.style.backgroundColor="blue";
+        countt++;
     }
 }
 
+
 function handleDivClick(event){
     var clickedDiv = event.target;
+    let gameend = document.getElementById('timer');
     if(clickedDiv.style.backgroundColor=="red"){
-        setTimeout(changeColorForSenior,1);
-        setTimeout(checkClick,1);
-        setTimeout(startTimer,1);
-        setTimeout(forSenior,1);
-        dange.textContent="Game Over!";
+        now=1;
+        
+        dange.textContent=countt;
+        gameend.textContent = "Game Over!";
         flag=true;
 
         return;
     }
-    myChangeColor(clickedDiv);
+    if(!now) myChangeColor(clickedDiv);
 
     event.stopPropagation();
 }
